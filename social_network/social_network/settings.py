@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+# This thing is also useful when we works with path:
+import os 
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Add our app into the project (MainConfig class in main/apps.py file is used to specify the full path):
+    'main.apps.MainConfig',
 ]
 
 MIDDLEWARE = [
@@ -73,11 +76,24 @@ WSGI_APPLICATION = 'social_network.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# This is a settings for using sqlite3 in our project:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# This is new settings for using postgreSQL in our project: 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'dbname',
+    'USER': 'username',
+    'PASSWORD': 'userpass',
+    'HOST': '127.0.0.1',
+    'PORT': '5432'
+}
 }
 
 
@@ -116,8 +132,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# Enter some settings for currectly static files usage:
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIR = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# This is a constant link to the directory OurProject/media/
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# This a constan for additing to upload filex prefix media
+MEDIA_URL = '/media/'
+
+# Когда мы используем отладочный веб-сервер, нам необходимо съэмулировать работу реального Web-сервера, 
+# для того, чтобы получить ранее загруженные файлы и передать их нашему приложению.
+# Для этого необходимо в файле urls.py нашего проекта добавить условие.
