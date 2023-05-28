@@ -1,0 +1,12 @@
+{% load static %}
+{{user.id}} <br>
+
+{{user.username}} <br>
+{{user.first_name}} <br>
+{{user.last_name}} <br>
+{{user.created_at}} <br>
+{% if user.profile_img == '' %}
+<img src="{%static 'main/images/default_profile.png' %}" alt="default"> <br />
+{% else %}
+
+{% endif %}
