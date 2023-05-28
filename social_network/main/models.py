@@ -8,14 +8,15 @@ video_extensions = ['.mp4', '.gif']
 # The list is for document files extensions: 
 document_extenstions = ['.docx', '.odt', '.pdf', '.txt', '.xls', 'xlxs']
 
-
-
 def user_directory_profile_image_path(instance, filename):
     # Генерируем путь для сохранения изображения: 'uploads/username/filename'
     return 'uploads/{0}/profile/{1}'.format(instance.username, filename)
 
 def post_directory_for_upload(instance, filename): 
     return 'uploads/posts/{0}/{1}'.format(instance, filename)
+
+def group_directory_for_upload_main_img(instance, filename): 
+    return 'uploads/groups/{0}/{1}'.format(instance, filename)
 
 # This method can find a file extesnion and return eh
 def get_content_type(file_path):
@@ -53,6 +54,7 @@ class User(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=False)
     profile_img = models.ImageField(upload_to=user_directory_profile_image_path, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # Will be created a setting_id field in model automaticaly:
     setting = models.OneToOneField("Setting", on_delete=models.CASCADE, null=True, blank=False)
@@ -94,4 +96,31 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("show_post", kwargs={"pk": self.pk})
 
+# This model is used for Group model to specify the Group field - group_theme:
+class GroupTheme(models.Model): 
+    name = models.CharField(max_length=50, null=False, blank=False)
 
+    def __str__(self):
+        return self.name
+    
+# This model is a Group model:
+class Group(models.Model): 
+    # Group admin id:
+    admin = models.ForeignKey("User", on_delete=models.CASCADE)
+    group_name = models.CharField(max_length=50, null=False, blank=False)
+    group_theme = models.ForeignKey("GroupTheme", on_delete=models.CASCADE)
+    group_img = models.ImageField(upload_to=group_directory_for_upload_main_img, null=True)
+    # The group description (it must be):
+    group_info = models.TextField(null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    # When call this model we will see the group_name:
+    def __str__(self):
+        return self.group_name
+
+    # For dynamic url creation:
+    def get_absolute_url(self):
+        return reverse("group", kwargs={"pk": self.pk})
+    
+    

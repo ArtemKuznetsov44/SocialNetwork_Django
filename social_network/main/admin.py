@@ -11,7 +11,7 @@ from main.models import *
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'username', 'first_name', 'last_name', 'email',  'last_login', 'created_at', 'is_staff']
+    list_display = ['id', 'username', 'first_name', 'last_name', 'gender',  'email',  'last_login', 'created_at', 'is_staff']
     list_editable = ['is_staff']
     list_filter = ['id', 'created_at']
     search_fields = ['first_name', 'last_name', 'user_name']
@@ -36,4 +36,12 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ['id', 'created_at']
     search_fields = ['text']
 
-    
+@admin.register(GroupTheme)
+class GroupThemeAdmin(admin.ModelAdmin): 
+    list_display = ['id', 'name']
+
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin): 
+    list_display = ['id', 'admin', 'group_name', 'group_theme', 'group_img', 'group_info', 'created_at']
+    list_filter = ['group_theme', 'group_name', 'created_at']
+    search_fields = ['id', 'group_theme', 'group_name', 'created_at']
