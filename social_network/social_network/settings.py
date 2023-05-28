@@ -77,24 +77,24 @@ WSGI_APPLICATION = 'social_network.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # This is a settings for using sqlite3 in our project:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# This is new settings for using postgreSQL in our project: 
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'dbname',
-    'USER': 'username',
-    'PASSWORD': 'userpass',
-    'HOST': '127.0.0.1',
-    'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-}
+
+# This is new settings for using postgreSQL in our project: 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'social_network',
+#         'USER': 'admin',
+#         'PASSWORD': '1802',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
 
 
 # Password validation
