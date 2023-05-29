@@ -69,6 +69,8 @@ class ContentType(models.Model):
 
 # This is the model for Post:
 class Post(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE, null=True)
+    group = models.ForeignKey("Group", on_delete=models.CASCADE, null=True)
     content_type = models.ForeignKey('ContentType', on_delete=models.CASCADE)
     # This field is for post's content uploading (can be blank, because it may contains text only)
     content = models.FileField(upload_to=post_directory_for_upload, null=True, blank=True)
@@ -134,12 +136,4 @@ class PostComment(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     comment = models.TextField(null=False, blank=False)
 
-# This is the model for saving post's which are made by user:
-class UserPost(models.Model): 
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
-    post = models.ForeignKey("Post", on_delete=models.CASCADE)
 
-# This is the model for saving post's whick are made by group:
-class GroupPost(models.Model): 
-    group = models.ForeignKey("Group", on_delete=models.CASCADE)
-    post = models.ForeignKey("Post", on_delete=models.CASCADE)

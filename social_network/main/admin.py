@@ -30,7 +30,7 @@ class ConetentTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'content_type', 'content', 'text', 'like_status', 'comment_status', 'created_at']
+    list_display = ['id', 'user', 'group', 'content_type', 'content', 'text', 'like_status', 'comment_status', 'created_at']
     list_editable = ['like_status', 'comment_status']
     list_filter = ['id', 'created_at']
     search_fields = ['text']
@@ -53,10 +53,3 @@ class PostLikeAdmin(admin.ModelAdmin):
 class PostCommentAdmin(admin.ModelAdmin): 
     list_display = ['id', 'post', 'user', 'comment']
 
-@admin.register(UserPost)
-class UserPostAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'user', 'post']
-
-@admin.register(GroupPost)
-class GroupPostAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'group', 'post']
