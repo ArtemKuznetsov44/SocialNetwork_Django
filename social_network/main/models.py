@@ -122,5 +122,24 @@ class Group(models.Model):
     # For dynamic url creation:
     def get_absolute_url(self):
         return reverse("group", kwargs={"pk": self.pk})
-    
-    
+
+# This is model for saving post's likes:
+class PostLike(models.Model): 
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+
+# This is model for saving post's comments:
+class PostComment(models.Model): 
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    comment = models.TextField(null=False, blank=False)
+
+# This is the model for saving post's which are made by user:
+class UserPost(models.Model): 
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+
+# This is the model for saving post's whick are made by group:
+class GroupPost(models.Model): 
+    group = models.ForeignKey("Group", on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
