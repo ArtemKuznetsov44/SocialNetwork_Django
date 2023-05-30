@@ -37,7 +37,8 @@ class Setting(models.Model):
 
     def __str__(self):
         return self.theme
-    
+
+
 # Gender model for User:
 class Gender(models.Model): 
     gender = models.CharField(max_length=7, null=False)
@@ -63,9 +64,14 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse("profile", kwargs={"pk": self.pk})
 
+
 # This model should contains different type names for content(video, gif, picture)
 class ContentType(models.Model): 
     name = models.CharField(max_length=15, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+    
 
 # This is the model for Post:
 class Post(models.Model):
@@ -98,6 +104,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("show_post", kwargs={"pk": self.pk})
 
+
 # This model is used for Group model to specify the Group field - group_theme:
 class GroupTheme(models.Model): 
     name = models.CharField(max_length=50, null=False, blank=False)
@@ -105,6 +112,7 @@ class GroupTheme(models.Model):
     def __str__(self):
         return self.name
     
+
 # This model is a Group model:
 class Group(models.Model): 
     # Group admin id:
@@ -125,10 +133,12 @@ class Group(models.Model):
     def get_absolute_url(self):
         return reverse("group", kwargs={"pk": self.pk})
 
+
 # This is model for saving post's likes:
 class PostLike(models.Model): 
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
     user = models.ForeignKey("User", on_delete=models.CASCADE)
+
 
 # This is model for saving post's comments:
 class PostComment(models.Model): 
@@ -137,3 +147,27 @@ class PostComment(models.Model):
     comment = models.TextField(null=False, blank=False)
 
 
+# This is the model for ChatType: 
+class ChatType(models.Model): 
+    name = models.CharField(max_length=15, null=False, blank=False)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse("typeof", kwargs={"name": self.name})
+    
+
+# This is the model Chat:
+class Chat(models.Model): 
+    chat_type = models.ForeignKey("ChatType", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse("chat", kwargs={"pk": self.pk})
+    
+
+# This is the model for chat members:
+class ChatMember(models.Model): 
+    chat = models.ForeignKey("Chat", on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
