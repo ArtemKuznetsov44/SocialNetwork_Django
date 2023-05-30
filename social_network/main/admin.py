@@ -76,3 +76,6 @@ class ChatAdmin(admin.ModelAdmin):
 class ChatMember(admin.ModelAdmin):
     list_display = ['id', 'chat', 'user']
 
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin): 
+    list_display = ['id', 'chat', 'sender', 'content_type', 'content', 'text', 'sent_at']
