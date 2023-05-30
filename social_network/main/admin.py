@@ -18,7 +18,7 @@ class UserAdmin(admin.ModelAdmin):
 
 # The UserFriend model registration: 
 @admin.register(UserFriend)
-class UserFriendAdmin(amdin.ModelAdmin): 
+class UserFriendAdmin(admin.ModelAdmin): 
     list_diplay = ['id', 'user', 'friend']
 
 # The UserFollower model registration: 
@@ -81,15 +81,10 @@ class PostLikeAdmin(admin.ModelAdmin):
 class PostCommentAdmin(admin.ModelAdmin): 
     list_display = ['id', 'post', 'user', 'comment']
 
-# The ChatType model registration:
-@admin.register(ChatType)
-class ChatTypeAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'name']
-
 # The Chat model registration:
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin): 
-    list_display = ['chat_type', 'created_at']
+    list_display = ['id', 'is_private', 'created_at', 'updated_at']
 
 # The ChatMember model registration:
 @admin.register(ChatMember)

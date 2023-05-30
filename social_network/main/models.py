@@ -75,8 +75,8 @@ class User(AbstractUser):
 
 # The model for user's friends: 
 class UserFriend(models.Model): 
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
-    friend = models.ForeignKey("User", on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name='main_for_friend_user')
+    friend = models.ForeignKey("User", on_delete=models.CASCADE, related_name='friend_user')
 
     class Meta: 
         unique_together = ('user', 'friend')
@@ -84,8 +84,8 @@ class UserFriend(models.Model):
 
 #The model for user's followers:
 class UserFollower(models.Model): 
-    user = models.ForeignKey("User", on_delete=models.CASCADE)
-    follower = models.ForeignKey("User", on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name='main_for_follower_user')
+    follower = models.ForeignKey("User", on_delete=models.CASCADE, related_name='follower_user')
 
     class Meta: 
         unique_together = ('user', 'follower')
@@ -93,8 +93,8 @@ class UserFollower(models.Model):
 
 # The model for user's friend requests: 
 class FriendRequest(models.Model): 
-    sender = models.ForeignKey("User", on_delete=models.CASCADE, null=False)
-    to_user = models.ForeignKey("User", on_delete=models.CASCADE, null=False)
+    sender = models.ForeignKey("User", on_delete=models.CASCADE, null=False, related_name='sender_user') 
+    to_user = models.ForeignKey("User", on_delete=models.CASCADE, null=False, related_name='receiving_user')
     is_accepted = models.BooleanField(default=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -195,21 +195,11 @@ class PostComment(models.Model):
     comment = models.TextField(null=False, blank=False)
 
 
-# This is the model for ChatType: 
-class ChatType(models.Model): 
-    name = models.CharField(max_length=15, null=False, blank=False, unique=True)
-
-    def __str__(self):
-        return self.name
-    
-    def get_absolute_url(self):
-        return reverse("typeof", kwargs={"name": self.name})
-    
-
 # This is the model Chat:
 class Chat(models.Model): 
-    chat_type = models.ForeignKey("ChatType", on_delete=models.CASCADE)
+    is_private = models.BooleanField(default=True, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse("chat", kwargs={"pk": self.pk})
