@@ -16,6 +16,21 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ['id', 'created_at']
     search_fields = ['first_name', 'last_name', 'user_name']
 
+# The UserFriend model registration: 
+@admin.register(UserFriend)
+class UserFriendAdmin(amdin.ModelAdmin): 
+    list_diplay = ['id', 'user', 'friend']
+
+# The UserFollower model registration: 
+@admin.register(UserFollower)
+class UserFollowerAdmin(admin.ModelAdmin): 
+    list_display = ['id', 'follower']
+
+# The FriendRequest model registration: 
+@admin.register(FriendRequest)
+class FriendRequestAdmin(admin.ModelAdmin): 
+    list_display = ['id', 'sender', 'to_user', 'is_accepted', 'created_at']
+
 # The Setting model registration:
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin): 
@@ -50,6 +65,11 @@ class GroupAdmin(admin.ModelAdmin):
     list_display = ['id', 'admin', 'group_name', 'group_theme', 'group_img', 'group_info', 'created_at']
     list_filter = ['group_theme', 'group_name', 'created_at']
     search_fields = ['id', 'group_theme', 'group_name', 'created_at']
+
+# The GroupMember model registration:
+@admin.register(GroupMember)
+class GroupMemberAdmin(admin.ModelAdmin): 
+    list_display = ['group', 'user']
 
 # The PostLike model registration:
 @admin.register(PostLike)
