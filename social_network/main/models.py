@@ -13,10 +13,13 @@ def user_directory_profile_image_path(instance, filename):
     return 'uploads/{0}/profile/{1}'.format(instance.username, filename)
 
 def post_directory_for_upload(instance, filename): 
-    return 'uploads/posts/{0}/{1}'.format(instance, filename)
+    return 'uploads/posts/{0}/{1}'.format(instance.pk, filename)
+
+def message_directory_for_upload(instance, filename): 
+    return 'uploads/messages/{0}/{1}/{2}'.format(instance.pk, instance.content_type__name, filename)
 
 def group_directory_for_upload_main_img(instance, filename): 
-    return 'uploads/groups/{0}/{1}'.format(instance, filename)
+    return 'uploads/groups/{0}/{1}'.format(instance.pk, filename)
 
 # This method can find a file extesnion and return eh
 def get_content_type(file_path):
@@ -62,7 +65,10 @@ class User(AbstractUser):
 
     # For geting absolute url address of current model(record in DB) by pk:
     def get_absolute_url(self):
+        # if (self.username is none):
         return reverse("profile", kwargs={"pk": self.pk})
+        
+        # return reverser('profile', kwargs={"username": self.username})
 
 
 # This model should contains different type names for content(video, gif, picture)
@@ -171,3 +177,27 @@ class Chat(models.Model):
 class ChatMember(models.Model): 
     chat = models.ForeignKey("Chat", on_delete=models.CASCADE)
     user = models.ForeignKey("User", on_delete=models.CASCADE)
+
+
+# This is the model for Message: 
+class Message(models.Model): 
+    chat = models.ForeignKey("Chat", on_delete=models.CASCADE)
+    sender = models.ForeignKey("User", on_delete=models.CASCADE)
+    content_type = models.ForeignKey("ContentType", on_delete=models.CASCADE)
+    content = models.FileField(upload_to=message_directory_for_upload, null=True, blank=True)
+    text = models.TextField(null=True, blank=True)
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    # This method should be started before Message model saving:
+    def save(self, *args, **kwargs):
+        # if content is not None:
+        if self.content: 
+            # Run get_content_type method with the specified file path of content:
+            content_type = get_content_type(self.content.path)
+            # If prev method result is not None:
+            if content_type:
+                # Initialize our content_type field:
+                self.content_type = content_type
+        
+        # Start save method of a super class:
+        super().save(*args, **kwargs)
