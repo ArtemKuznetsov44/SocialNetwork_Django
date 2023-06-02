@@ -1,0 +1,21 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %} Start Page {% endblock title %}
+{% block links %}
+<link type="text/css" href="{% static 'main/css/start_page.css' %}" rel="stylesheet">
+{% endblock links%}
+
+{% block content %}
+<div class="wellcome-box">
+    <div class="head">
+        <img id='logo' src="{% static 'main/images/logo.png'%}" alt="logo">
+        <h1> Welcome to the IN CONNECTION social network! </h1>
+        <h4> This is the place where you can be in connection with your friend anywere</h4>
+    </div>
+    <div class="bottom">
+        <a href="{% url 'sign_in' %}" class="begin"> Let's go! </a>
+    </div>
+
+</div>
+{% endblock content %}

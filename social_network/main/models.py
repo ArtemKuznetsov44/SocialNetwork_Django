@@ -63,7 +63,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
 
     # Will be created a setting_id field in model automaticaly:
-    setting = models.OneToOneField("Setting", on_delete=models.CASCADE, null=True, blank=False)
+    setting = models.OneToOneField("Setting", on_delete=models.CASCADE, null=True, blank=True)
 
     # For geting absolute url address of current model(record in DB) by pk:
     def get_absolute_url(self):
@@ -100,6 +100,7 @@ class FriendRequest(models.Model):
 
     class Meta: 
         unique_together = ('sender', 'to_user') 
+
 
 # This model should contains different type names for content(video, gif, picture)
 class ContentType(models.Model): 
