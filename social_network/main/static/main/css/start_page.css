@@ -1,0 +1,47 @@
+.begin {
+    padding: 15px; 
+    background: #ED664C;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    width: 30vw;
+}
+
+#logo {
+    margin-bottom: 40px;
+}
+
+.begin:hover{
+    background: #171717;
+    transition: 0.5s ease;
+}
+
+.wellcome-box {
+   top: 50%; 
+   left: 50%;
+   width: 70vw;
+   position: absolute;
+   transform: translate(-50%, -50%);
+   background-color: #404040;
+   padding: 50px; 
+   border-radius: 20px;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+.head {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.bottom {
+    display: flex;
+    justify-content: center;
+}
+
