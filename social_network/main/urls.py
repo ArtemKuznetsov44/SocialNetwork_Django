@@ -4,7 +4,7 @@ from main.views import *
 # Our app-package urls here:
 urlpatterns = [
     path('',  show_start_page, name='start_page'),
-    path('sign-in/', sign_in , name='sign_in'),
-    path('news/', show_news_page, name='news_page'), 
-    # path('profile/id=<int:pk>', UserProfile.as_view(), name='user_profile'),
+    path('registration/', UserRegister.as_view(), name='registration'), 
+    path('sign-in/', UserSignIn.as_view() , name='sign_in'),
+    path('profile/<int:pk>', ShowProfile.as_view(), name='profile')
 ]

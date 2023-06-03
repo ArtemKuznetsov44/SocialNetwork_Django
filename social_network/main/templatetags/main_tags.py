@@ -11,7 +11,7 @@ def get_burger_content():
 
     links = {
         'My Profile': reverse('start_page'),
-        'News' : reverse('news_page') ,
+        'News' : "#" ,
         'Friends': "#",
         'Communities' : "#",
         'Photos' : "#",

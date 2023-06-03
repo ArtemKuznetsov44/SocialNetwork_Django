@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.utils.translation import gettext_lazy as _
 import os
+
 
 # The list is for video files extensions:
 video_extensions = ['.mp4', '.gif']
@@ -55,6 +57,7 @@ class Gender(models.Model):
 # Add some new fields to base User model from Django:
 class User(AbstractUser): 
     # New fields for django default User model:
+    email = models.EmailField(_("email address"), unique=True, blank=False)
     phone = models.CharField(max_length=15, null=True, blank=False)
     gender = models.OneToOneField("Gender", on_delete=models.CASCADE, null=True, blank=False)
     date_of_birth = models.DateField(null=True, blank=False)
@@ -62,8 +65,12 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
     # Will be created a setting_id field in model automaticaly:
     setting = models.OneToOneField("Setting", on_delete=models.CASCADE, null=True, blank=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     # For geting absolute url address of current model(record in DB) by pk:
     def get_absolute_url(self):

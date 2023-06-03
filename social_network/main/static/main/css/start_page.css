@@ -21,11 +21,10 @@
 }
 
 .wellcome-box {
-   top: 50%; 
    left: 50%;
    width: 70vw;
-   position: absolute;
-   transform: translate(-50%, -50%);
+   position: relative;
+   transform: translate(-50%);
    background-color: #404040;
    padding: 50px; 
    border-radius: 20px;

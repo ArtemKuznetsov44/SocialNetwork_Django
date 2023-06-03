@@ -1,5 +1,42 @@
 {% extends "main/base.html" %}
+{% load static %}
 
 {% block title %}
     Sign In
 {% endblock title %}
+
+{% block links %}
+<link type="text/css" href="{% static 'main/css/start_forms.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <div class="head">
+        <a href="{% url 'sign_in' %}" class="head-links" style="text-decoration:underline; text-underline-offset:5px"> SING IN </a> |
+        <a href="{% url 'registration' %}" class="head-links" > REGISTRATION </a>
+    </div>
+
+    <form method='post'>
+        {% csrf_token %}
+        {% for field in form %}
+        <!-- {{ field.label }} -->
+        {{ field }}
+        {% if field.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:">
+                <use xlink:href="#exclamation-triangle-fill" />
+            </svg>
+            <div>
+                {{field.errors}}
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <button id="complete" type="submit">Complete</button>
+    </form>
+</div>
+
+{% endblock content %}
