@@ -1,7 +1,16 @@
 nav {
+    top: 0; 
+    position: absolute !important;
     background-color: #171717;
+    margin-bottom: 2em;
+    z-index: 5;
+    margin-bottom: 50px;
+    width: 100%;
 }
 
+#super-main  {
+    margin-top: 100px;
+}
 
 body {
     background-color: #212121;

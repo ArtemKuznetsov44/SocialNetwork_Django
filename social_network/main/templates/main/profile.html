@@ -1,6 +1,16 @@
-{% extend "main/base.htlm" %}
-
+{% extends "main/base.html" %}
+{% load main_tags %}
 {% load static %}
+
+{% block title %}
+My Profile
+{% endblock title%}
+
+{% block burger %}
+{% get_burger_content %}
+{% endblock burger %}
+
+{% block content %}
 {{user.id}} <br>
 
 {{user.username}} <br>
@@ -13,3 +23,5 @@
 {% else %}
 
 {% endif %}
+
+{% endblock content %}
