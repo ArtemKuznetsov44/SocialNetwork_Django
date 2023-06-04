@@ -20,8 +20,10 @@ class UserRegistrationForm(UserCreationForm):
         attrs={"class": "form-control", "placeholder": "email@gmail.com"}))
     phone = forms.CharField(label='Phone', required=True, widget=TextInput(
         attrs={'class': "form-control", 'placeholder': 'Phone number'}))
+
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(
     ), empty_label='Gender', widget=Select(attrs={'class': 'form-select'}), required=True)
+
     date_of_birth = forms.DateField(label='Date of birht', required=True, widget=DateInput(
         attrs={'type': 'date', 'class': 'form-control'}))
     password1 = forms.CharField(label="password", widget=PasswordInput(
@@ -53,3 +55,18 @@ class UserSignInForm(AuthenticationForm):
         attrs={"class": "form-control", "placeholder": "Password"}))
     
     fields = ['email', 'password']
+
+
+# This is the form for additing new photos by user:
+class AddPhotosForm(forms.ModelForm): 
+    class Meta: 
+        model = UserPhoto
+        fields = ['photo'] 
+
+        widgets = {
+            'photo': FileInput(attrs={
+                'class': 'form-control'
+            })
+        }
+
+        

@@ -1,0 +1,196 @@
+.main-container {
+    position: relative; 
+    left: 50%; 
+    width: 90%;
+    height: 80vh;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    column-gap: 5px;
+  
+}
+
+.right-part {
+    display: grid;
+    border-radius: 0px 20px 20px 0px;
+    grid-template-rows: auto auto auto;
+    overflow: auto;
+    row-gap: 5px;
+}
+
+.left-menu  {
+    background-color:  #404040;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.left-menu .menu-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: left;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#sign_out {
+    color: #212323;
+}
+
+.left-menu .menu-content div a {
+    text-decoration: none;
+    color: white; 
+    font-size: 20px;
+    margin-left: 2.5em;
+    
+}
+
+.profile-back-img {
+    width: 100%;
+    height: 160px;
+}
+
+#user_back {
+    width: 100%;
+    height: 160px;
+    border-radius: 0px 20px 0px 0px;
+    object-fit: cover;
+}
+
+.left-menu .menu-content div a:hover {
+   color: #FDC75B; 
+   transition: 0.5s ease;
+}
+
+.profile-img-and-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 2em;
+    width: 90%;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-left: 10px;
+    width: 100%;
+}
+
+.profile-img {
+    max-width: 200px;
+    max-height: 200px;
+    position: relative;
+    bottom: 4em;
+}
+
+#user_img {
+    border-radius: 100px;
+    border: 5px solid #171717;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+#user-fname-lname {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.right-head {
+    grid-row: 1;
+    background-color: #404040;
+}
+
+.right-photos {
+    grid-row: 2;
+    display: grid;
+    width: 100%;
+    min-width: 300px;
+    grid-template-rows: 80px 300px; 
+    row-gap: 5px;
+}
+
+.right-photos .right-photos-head {
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #404040;
+}
+
+.right-photos .right-photos-body {
+    grid-row: 2;
+    background-color: #404040;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.right-photos .right-photos-body .one-photo {
+    max-width: 280px;
+    max-height: 280px;
+}
+
+.right-photos .right-photos-body .one-photo > img {
+    max-width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+
+.right-posts {
+    grid-row: 3;
+    background-color: #404040;
+    min-height: 80px;
+}
+
+.profile-btns {
+    background-color: #171717;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px; 
+    text-decoration: none;
+    color:white;
+}
+
+.right-photos-empty {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-photos-empty p {
+    font-size: 24px;
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 0px 20px 20px 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #FDC75B, #ED664C);
+    border-radius: 20px;
+    height: 50px;
+    /* Установите маргины, чтобы скроллбар занимал определенную высоту */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.right-posts-empty {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}

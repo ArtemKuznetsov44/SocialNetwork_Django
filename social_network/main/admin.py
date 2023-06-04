@@ -16,6 +16,11 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ['id', 'created_at']
     search_fields = ['first_name', 'last_name', 'user_name']
 
+# The UserPhoto model registration: 
+@admin.register(UserPhoto)
+class UserPhotoAdmin(admin.ModelAdmin): 
+    list_display = ['id', 'user', 'photo']
+
 # The UserFriend model registration: 
 @admin.register(UserFriend)
 class UserFriendAdmin(admin.ModelAdmin): 

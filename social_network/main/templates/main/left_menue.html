@@ -1,0 +1,13 @@
+<div class="menu-content">
+    {% for name, link in links.items %}
+    <div>
+        {% if name == 'Sign out'%}
+        <hr />
+        <a href={{link}} id="sign_out"> {{name}}</a>
+        {% else %}
+        <a href={{link}}> {{name}}</a>
+        {% endif %}
+
+    </div>
+    {% endfor %}
+</div>

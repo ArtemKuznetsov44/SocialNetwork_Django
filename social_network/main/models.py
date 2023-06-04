@@ -11,16 +11,29 @@ video_extensions = ['.mp4', '.gif']
 document_extenstions = ['.docx', '.odt', '.pdf', '.txt', '.xls', 'xlxs']
 
 #region Some useful functions for models:
+# This method configure the path for users' avatars uploadings:
 def user_directory_profile_image_path(instance, filename):
-    # Генерируем путь для сохранения изображения: 'uploads/username/filename'
-    return 'uploads/{0}/profile/{1}'.format(instance.username, filename)
+    # Генерируем путь для сохранения изображения: 'uploads/profile/username/avatar/filename'
+    return 'uploads/profile/{0}/avatar/{1}'.format(instance.username, filename)
 
+# This method configure the path for users' background images uploadings:
+def user_directory_profile_back_path(instance, filename):
+    # Генерируем путь для сохранения изображения: 'uploads/profile/username/backgound/filename'
+    return 'uploads/profile/{0}/bacground/{1}'.format(instance.username, filename)
+
+# This method configure the path for users' photos uploadings:
+def user_directory_photo_path(instance, filename): 
+    return 'uploads/profile/{0}/photos/{1}'.format(instance.user.username, filename)
+
+# This metdo configure the path for posts' files uploadings:
 def post_directory_for_upload(instance, filename): 
     return 'uploads/posts/{0}/{1}'.format(instance.pk, filename)
 
+# This methdo configure the path for messages' different kind of files uploading:
 def message_directory_for_upload(instance, filename): 
     return 'uploads/messages/{0}/{1}/{2}'.format(instance.pk, instance.content_type__name, filename)
 
+# This method configure the path for groups' backgound image uploadings:
 def group_directory_for_upload_main_img(instance, filename): 
     return 'uploads/groups/{0}/{1}'.format(instance.pk, filename)
 
@@ -59,9 +72,10 @@ class User(AbstractUser):
     # New fields for django default User model:
     email = models.EmailField(_("email address"), unique=True, blank=False)
     phone = models.CharField(max_length=15, null=True, blank=False)
-    gender = models.OneToOneField("Gender", on_delete=models.CASCADE, null=True, blank=False)
+    gender = models.ForeignKey("Gender", on_delete=models.CASCADE, null=True, blank=False)
     date_of_birth = models.DateField(null=True, blank=False)
     profile_img = models.ImageField(upload_to=user_directory_profile_image_path, null=True)
+    profile_back_img = models.ImageField(upload_to=user_directory_profile_back_path, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -79,6 +93,13 @@ class User(AbstractUser):
         
         # return reverser('profile', kwargs={"username": self.username})
 
+# The model for user's photos:
+class UserPhoto(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to=user_directory_photo_path, null=False, blank=False)
+
+    class Meta: 
+        unique_together = ('user', 'photo')
 
 # The model for user's friends: 
 class UserFriend(models.Model): 
