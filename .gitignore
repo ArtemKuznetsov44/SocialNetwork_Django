@@ -1,0 +1,84 @@
+# Byte-compiled / optimized Python files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Local development settings
+.env
+.env.local
+.env.*.local
+
+# Log files
+*.log
+
+# Database
+*.db
+*.sqlite3
+db.sqlite3
+
+# Static files
+staticfiles/
+
+# Media files
+media/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Compiled translations
+locale/
+
+# Other generated files
+*.bak
+*.swp
+*.tmp
+*.swo
+
+# IDE / Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Compiled Python modules
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore migrations if not using separate directory
+# Remove this if using Django 3.2 or higher
+# You can also exclude specific apps e.g. /myapp/migrations/
+migrations/
+
+# Ignore Docker files if not using Docker
+Dockerfile
+docker-compose.yml
+/docker-compose.local.yml
+/docker-compose.prod.yml
+
+# Ignore deployment files
+fabfile.py
+fabfile/
+*.key
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore coverage reports
+.coverage
+htmlcov/
+
+# Ignore pipenv virtual environment
+/.venv/
+
+# Ignore pipenv lock file
+Pipfile.lock
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore editor backup files
+*~
