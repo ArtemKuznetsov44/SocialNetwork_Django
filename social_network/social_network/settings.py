@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Add our app into the project (MainConfig class in main/apps.py file is used to specify the full path):
     'main.apps.MainConfig',
+    # 'django-pjax',
 ]
 
 MIDDLEWARE = [

@@ -128,7 +128,7 @@ class AddNewPhotoAjax(View):
             created = UserPhoto.objects.create(
                 user=self.request.user, photo=upload_photo)
             if created:
-                return JsonResponse(data={'success': 'Hello'}, status=201)
+                return JsonResponse({'success': 'ok'})
             return JsonResponse(
                 data={'error': 'Faild to upload current image'},
                 status=400

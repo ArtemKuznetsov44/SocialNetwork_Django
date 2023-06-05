@@ -1,40 +1,21 @@
-{% extends "main/base.html" %}
-{% load main_tags %}
-{% load static %}
-
-{% block title %}
-My Profile
-{% endblock title%}
-
-{% block links %}
-<link type="text/css" href="{% static 'main/css/profile.css' %}" rel="stylesheet">
-{% endblock links %}
-
-{% block burger %}
-{% get_burger_content %}
-{% endblock burger %}
-
-{% block content %}
+{% extends "main/base.html" %} {% load main_tags %} {% load static %} {% block title %} My Profile {% endblock title%} {% block links %}
+<link type="text/css" href="{% static 'main/css/profile.css' %}" rel="stylesheet"> {% endblock links %} {% block burger %} {% get_burger_content %} {% endblock burger %} {% block content %}
 <div class="main-container">
     <div class="left-menu">
         {% get_left_menu %}
     </div>
-    <div class="right-part">
+    <div class="right-part" id="pjax-container">
         <div class="right-head">
             <div class="profile-back-img">
                 {% if user.profile_back_img %}
-                <img src="{{ user.profile_back_img.url }}" alt="default-back" id="user_back">
-                {% else %}
-                <img src="{% static 'main/images/default_user_back.jpg' %}" alt="default-back" id="user_back">
-                {% endif %}
+                <img src="{{ user.profile_back_img.url }}" alt="default-back" id="user_back"> {% else %}
+                <img src="{% static 'main/images/default_user_back.jpg' %}" alt="default-back" id="user_back"> {% endif %}
             </div>
             <div class="profile-img-and-info">
                 <div class="profile-img">
                     {% if user.profile_img %}
-                    <img src="{{ user.profile_img.url }}" alt="default-back" id="user_img">
-                    {% else %}
-                    <img src="{% static 'main/images/default_profile.png' %}" alt="default-back" id="user_img">
-                    {% endif %}
+                    <img src="{{ user.profile_img.url }}" alt="default-back" id="user_img"> {% else %}
+                    <img src="{% static 'main/images/default_profile.png' %}" alt="default-back" id="user_img"> {% endif %}
                 </div>
                 <div class="info">
                     <div>
@@ -47,19 +28,16 @@ My Profile
         </div>
         <div class="right-photos">
             <div class="right-photos-head">
-                <a href="#" id="modal_photo_add" class="profile-btns" data-bs-toggle="modal"
-                    data-bs-target="#ajax_add_photo">
+                <a href="#" id="modal_photo_add" class="profile-btns" data-bs-toggle="modal" data-bs-target="#ajax_add_photo">
                     Add photo
                 </a>
             </div>
             <div class="right-photos-body">
-                {% if user_photos_objects %}
-                {% for user_photo in user_photos_objects %}
+                {% if user_photos_objects %} {% for user_photo in user_photos_objects %}
                 <div class="one-photo">
                     <img src="{{ user_photo.photo.url }}" alt="img">
                 </div>
-                {% endfor %}
-                {% else %}
+                {% endfor %} {% else %}
                 <!-- <div class="right-photos-empty"> -->
                 <p> No photos yet </p>
                 <!-- </div> -->
@@ -67,12 +45,10 @@ My Profile
             </div>
         </div>
         <div class="right-posts">
-            {% if user_posts %}
-            {% for post in user_posts %}
+            {% if user_posts %} {% for post in user_posts %}
             <div class="one-post">
             </div>
-            {% endfor %}
-            {% else %}
+            {% endfor %} {% else %}
             <div class="right-posts-empty">
                 <a class="profile-btns" href="#" id="add_post">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48">
@@ -87,9 +63,9 @@ My Profile
         </div>
     </div>
 </div>
-{% include 'main/modal_add_photo.html' %}
-{% endblock content %}
-
-{% block scripts %}
+{% include 'main/modal_add_photo.html' %} {% endblock content %} {% block scripts %}
 <script src="{% static 'main/js/modal.js' %}"></script>
+<script>
+    $(document).pjax('a', '#pjax-container');
+</script>
 {% endblock scripts %}
