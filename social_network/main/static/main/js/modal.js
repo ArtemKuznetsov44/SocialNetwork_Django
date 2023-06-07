@@ -64,6 +64,8 @@ $(function ($) {
             success: function (response) {
                 console.log(response)
                 $('form').attr('value', response.post_id)
+                
+                $('#prev_comments_container').empty()
 
                 for (let i = 0; i < response.comments.length; i++) {
 
@@ -78,8 +80,8 @@ $(function ($) {
                         'align-items': 'flex-start',
                         'margin': '10px',
                         'min-height': '30px',
-
                     })
+                    
                     // User name creation:
                     let username = response.comments[i]['first_name'] + " " + response.comments[i]['last_name'] + ": "
                     // Create the container for user name:
