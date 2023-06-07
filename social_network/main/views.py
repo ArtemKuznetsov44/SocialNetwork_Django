@@ -11,8 +11,6 @@ from django.http import JsonResponse, HttpResponseRedirect
 
 # This is a class-based view - CreateView -
 # View for creating a new object, with a response rendered by a template.
-
-
 class UserRegister(CreateView):
     model = User
     form_class = UserRegistrationForm
@@ -203,7 +201,7 @@ class AddLikeAjax(View):
         post_like = PostLike.objects.filter(Q(user=self.request.user.pk) & Q(post=post_id))
 
         if not post_like: 
-            post_like = PostLike.objects.create(user=self.request.user, post=Post.objects.get(post=post_id))
+            post_like = PostLike.objects.create(user=self.request.user, post=Post.objects.get(pk=post_id))
             if post_like: 
                 return JsonResponse(data={'create': True}, status=201)
 
