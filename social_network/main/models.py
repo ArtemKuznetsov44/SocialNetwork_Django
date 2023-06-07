@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
@@ -9,6 +11,8 @@ video_extensions = ['.mp4', '.gif']
 
 # The list is for document files extensions: 
 document_extenstions = ['.docx', '.odt', '.pdf', '.txt', '.xls', 'xlxs']
+
+image_extenstions = ['.jpg', '.png' ]
 
 #region Some useful functions for models:
 # This method configure the path for users' avatars uploadings:
@@ -47,6 +51,8 @@ def get_content_type(file_path):
         return ContentType.objects.get(id=1)
     elif extension in document_extenstions:
         return ContentType.objects.get(id=2)
+    elif extension in image_extenstions:
+        return ContentType.objects.get(id=3)
     
     return None
 #endregion
@@ -97,6 +103,7 @@ class User(AbstractUser):
 class UserPhoto(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
     photo = models.ImageField(upload_to=user_directory_photo_path, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta: 
         unique_together = ('user', 'photo')
@@ -142,11 +149,11 @@ class ContentType(models.Model):
 class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, null=True)
     group = models.ForeignKey("Group", on_delete=models.CASCADE, null=True)
-    content_type = models.ForeignKey('ContentType', on_delete=models.CASCADE)
+    content_type = models.ForeignKey('ContentType', on_delete=models.CASCADE, null=True, blank=True)
     # This field is for post's content uploading (can be blank, because it may contains text only)
     content = models.FileField(upload_to=post_directory_for_upload, null=True, blank=True)
     # In our case the body with message must be in post:
-    text = models.TextField(null=False, blank=False)
+    text = models.TextField(null=True, blank=True)
     like_status = models.BooleanField(default=True)
     comment_status = models.BooleanField(default=True)
     # auto_now_add=True says that this value is not for changing at all, only once time it will be added: 
@@ -162,6 +169,8 @@ class Post(models.Model):
             if content_type:
                 # Initialize our content_type field:
                 self.content_type = content_type
+        else: 
+            self.content_type = None
         
         # Start save method of a super class:
         super().save(*args, **kwargs)

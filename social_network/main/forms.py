@@ -69,4 +69,39 @@ class AddPhotosForm(forms.ModelForm):
             })
         }
 
-        
+# This is the form for additing new posts by user:
+class AddPostsForm(forms.ModelForm): 
+    class Meta: 
+        model = Post
+        fields = ['text', 'content', 'like_status', 'comment_status']
+
+        widgets = {
+            'text': Textarea(attrs={
+                "class": "form-control", 
+                "rows": "5",
+                "placeholder": "Some content here..."
+            }), 
+            'content': FileInput(attrs={
+                'class': 'form-control'
+            }), 
+            'like_status': CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }), 
+            'comment_status': CheckboxInput(attrs={
+                'class': 'form-check-input'
+            })
+        }
+
+# This is the form for additing new comments by user:
+class AddCommentForm(forms.ModelForm): 
+    class Meta: 
+        model = PostComment
+        fields = ['comment']
+
+        widgets = {
+            'comment': Textarea(attrs={
+                'class': 'form-control', 
+                'rows': '3', 
+                'placeholder': 'Leave your comment here...'
+            })
+        }

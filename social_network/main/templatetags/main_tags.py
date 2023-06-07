@@ -27,3 +27,11 @@ def get_burger_content():
 @register.inclusion_tag("main/left_menue.html")
 def get_left_menu():
     return {'links': links}
+
+@register.filter
+def get_from_dict(dictionary, key):
+    return dictionary.get(key)
+
+@register.filter
+def remove_quotes(text):
+    return text.replace('"', '')

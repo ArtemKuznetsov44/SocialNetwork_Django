@@ -1,26 +1,31 @@
-<div class="modal fade" id="ajax_add_photo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ajax_add_comment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);">
         <div class="modal-content" style="background-color:#404040;">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new photo</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add new comment</h5>
                 <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            <div id="prev_comments_container"
+                style="min-height:20px; width:100%;text-align:center; margin: 10px 0px 10px 0px; border-bottom:1px solid white;">
+            </div>
+
             <div class="alert alert-danger d-none" role="alert">
             </div>
-            <form action="{% url 'add_photo_ajax' %}" method="post" enctype="multipart/form-data" id="add_photo_ajax_form">
+            <form action="{% url 'add_comment_ajax' %}" method="post" id="add_comment_ajax_form">
                 {% csrf_token %}
                 <div class="modal-body">
-                    {{add_photo_ajax.photo}}
-                   
-                </div>
-                <div class="alert alert-success d-none w-90" role="alert" id="success-alert">
+                    {{add_comment_ajax.comment}}
                 </div>
 
+                <div class="alert alert-success d-none w-90" role="alert">
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success" style="background-color:#2DD648">Save</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

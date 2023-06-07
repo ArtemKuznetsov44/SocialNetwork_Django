@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-nk3*4x^i@nwywl_&j17+wkc%)ctq(86o3u)c#2#f-(v+ozixiw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '172.20.10.5', '192.168.0.28']
 
 AUTH_USER_MODEL = "main.User"
 
@@ -39,9 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'easy_pjax', 
     # Add our app into the project (MainConfig class in main/apps.py file is used to specify the full path):
     'main.apps.MainConfig',
 ]
+
+MIDDLEWARE_CLASSES=[
+    "easy_pjax.middleware.UnpjaxMiddleware"
+],
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'main.middleware.PjaxMiddleware',
 ]
 
 ROOT_URLCONF = 'social_network.urls'
@@ -61,12 +67,16 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+             "builtins": [
+                "easy_pjax.templatetags.pjax_tags"
+            ],
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'main.context_processor.get_context_data'
+                'main.context_processor.get_context_data', 
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -123,7 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
+
 
 USE_I18N = True
 

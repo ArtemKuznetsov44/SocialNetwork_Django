@@ -19,7 +19,7 @@ class UserAdmin(admin.ModelAdmin):
 # The UserPhoto model registration: 
 @admin.register(UserPhoto)
 class UserPhotoAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'user', 'photo']
+    list_display = ['id', 'user', 'photo', 'created_at']
 
 # The UserFriend model registration: 
 @admin.register(UserFriend)
