@@ -20,8 +20,10 @@ class UserRegistrationForm(UserCreationForm):
         attrs={"class": "form-control", "placeholder": "email@gmail.com"}))
     phone = forms.CharField(label='Phone', required=True, widget=TextInput(
         attrs={'class': "form-control", 'placeholder': 'Phone number'}))
+
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(
     ), empty_label='Gender', widget=Select(attrs={'class': 'form-select'}), required=True)
+
     date_of_birth = forms.DateField(label='Date of birht', required=True, widget=DateInput(
         attrs={'type': 'date', 'class': 'form-control'}))
     password1 = forms.CharField(label="password", widget=PasswordInput(
@@ -53,3 +55,53 @@ class UserSignInForm(AuthenticationForm):
         attrs={"class": "form-control", "placeholder": "Password"}))
     
     fields = ['email', 'password']
+
+
+# This is the form for additing new photos by user:
+class AddPhotosForm(forms.ModelForm): 
+    class Meta: 
+        model = UserPhoto
+        fields = ['photo'] 
+
+        widgets = {
+            'photo': FileInput(attrs={
+                'class': 'form-control'
+            })
+        }
+
+# This is the form for additing new posts by user:
+class AddPostsForm(forms.ModelForm): 
+    class Meta: 
+        model = Post
+        fields = ['text', 'content', 'like_status', 'comment_status']
+
+        widgets = {
+            'text': Textarea(attrs={
+                "class": "form-control", 
+                "rows": "5",
+                "placeholder": "Some content here..."
+            }), 
+            'content': FileInput(attrs={
+                'class': 'form-control'
+            }), 
+            'like_status': CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }), 
+            'comment_status': CheckboxInput(attrs={
+                'class': 'form-check-input'
+            })
+        }
+
+# This is the form for additing new comments by user:
+class AddCommentForm(forms.ModelForm): 
+    class Meta: 
+        model = PostComment
+        fields = ['comment']
+
+        widgets = {
+            'comment': Textarea(attrs={
+                'class': 'form-control', 
+                'rows': '3', 
+                'placeholder': 'Leave your comment here...'
+            })
+        }
