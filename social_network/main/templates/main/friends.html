@@ -1,0 +1,218 @@
+{% extends "main/base.html"|pjax:request %}
+{% load main_tags %}
+{% load pjax_tags %}
+{% load static %}
+
+{% block title %}
+My Profile
+{% endblock title%}
+
+{% block links %}
+<link type="text/css" href="{% static 'main/css/friends.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block burger %}
+{% get_burger_content %}
+{% endblock burger %}
+
+{% block content %}
+<div class="main-container">
+
+    <div class="left-menu">
+        {% get_left_menu %}
+    </div>
+
+    <div class="right-part">
+        <div class="right-part-head">
+            <div class="right-part-head-categories">
+                <div class="profile-btns right-part-head-friends-category">
+                    My Friends
+                </div>
+                <div class="profile-btns right-part-head-requests-category">
+                    Friends Requests
+                </div>
+                <div class="profile-btns right-part-head-users-category">
+                    Users
+                </div>
+            </div>
+        </div>
+
+        <div class="right-part-body" style="overflow-y: auto;">
+
+            <div class="right-part-body-friends">
+                {% if friends %}
+                {% for friend in friends %}
+                <div class="one-record">
+                    <div class="one-record-user-img-info">
+                        <div class="one-record-user-img">
+                            {% if friend.profile_img %}
+                            <a href="{% url 'profile' friend.slug %}" alt="to_{{user.pk}}"
+                                style="text-decoration:none;color:white;">
+                                <img src="{{ friend.profile_img.url }}" alt="default-back">
+                            </a>
+                            {% else %}
+                            <a href="{% url 'profile' friend.slug %}" alt="to_{{user.pk}}"
+                                style="text-decoration:none;color:white;">
+                                <img src="{% static 'main/images/default_profile.png' %}" alt="default-back">
+                            </a>
+                            {% endif %}
+                        </div>
+
+
+                        <div class="one-record-user-info">
+                            <div class="one-record-user-info-names">
+                                <b>
+                                    {{friend.first_name}}
+                                    {{friend.last_name}}
+                                </b>
+                            </div>
+                            <div class="one-record-user-info-username"> {{friend.username}}</div>
+
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; font-size:13px; min-width:120px; flex-wrap:wrap;">
+                        {{friend.last_login|date:"m/d/Y  h:iA" }}
+                    </div>
+                </div>
+
+                {% endfor %}
+                {% else %}
+                <div class="content-empty">
+                    <p> No friends yet </p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13.5 24s1-1 2.5-1s2.5 1 2.5 1M29 16c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13Zm-6 2a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-12 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0Z" />
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="right-part-body-requests d-none">
+                {% if friend_requests_received %}
+                {% for friend_req in friend_requests_received %}
+                <div class="one-record">
+                    <div class="one-record-user-img-info">
+                        <div class="one-record-user-img">
+                            {% if friend_req.sender.profile_img.url %}
+                            <a href="{% url 'profile' friend_req.sender.slug %}" alt="to_{{user.pk}}"
+                                style="text-decoration:none;color:white;">
+                                <img src="{{ friend_req.sender.profile_img.url }}" alt="default-back">
+                            </a>
+                            {% else %}
+                            <a href="{% url 'profile' friend_req.sed.slug %}" alt="to_{{user.pk}}"
+                                style="text-decoration:none;color:white;">
+                                <img src="{% static 'main/images/default_profile.png' %}" alt="default-back">
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="one-record-user-info">
+                            <div class="one-record-user-info-names">
+                                <b>
+                                    {{friend_req.sender.first_name}}
+                                    {{friend_req.sender.last_name}}
+                                </b>
+                            </div>
+                            <div class="one-record-user-info-username"> {{friend_req.sender.username}}</div>
+
+                        </div>
+
+                    </div>
+                    <div class="one-record-buttons-container">
+                        <div class="accept-request profile-btns" value={{friend_req.sender.pk}}>
+                            Accept request
+                        </div>
+                        {% if friend_req.sender not in followers %}
+                        <div class="make-follower profile-btns" value="{{friend_req.sender.pk}}">
+                            Keep as follower
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="content-empty">
+                    <p> No friends requests yet </p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13.5 24s1-1 2.5-1s2.5 1 2.5 1M29 16c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13Zm-6 2a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-12 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0Z" />
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+
+
+            <div class="right-part-body-users d-none">
+                {% if users %}
+                {% for user in users %}
+
+                <div class="one-record">
+                    <div class="one-record-user-img-info">
+                        <div class="one-record-user-img">
+                            {% if user.profile_img %}
+                            <a href="{% url 'profile' user.slug %}" alt="to_{{user.pk}}"
+                                style="text-decoration:none;color:white;">
+                                <img src="{{ user.profile_img.url }}" alt="default-back">
+                            </a>
+                            {% else %}
+                            <a href="{% url 'profile' user.slug %}" alt="to_{{user.pk}}"
+                                style="text-decoration:none;color:white;">
+                                <img src="{% static 'main/images/default_profile.png' %}" alt="default-back">
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="one-record-user-info">
+                            <div class="one-record-user-info-names"> <b> {{user.first_name}} {{user.last_name}} </b>
+                            </div>
+                            <div class="one-record-user-info-username"> {{user.username}}</div>
+
+                        </div>
+                    </div>
+                    {% if user not in friends and user not in receiving_user %}
+                    <div class="send-request profile-btns" value={{user.pk}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M15 14c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4m-9-4V7H4v3H1v2h3v3h2v-3h3v-2m6 2a4 4 0 0 0 4-4a4 4 0 0 0-4-4a4 4 0 0 0-4 4a4 4 0 0 0 4 4Z" />
+                        </svg>
+                    </div>
+                    {% elif user not in friends and user in receiving_user %}
+                    <div class="profile-btns-inactive">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M13 19c0-3.31 2.69-6 6-6c1.1 0 2.12.3 3 .81V6a2 2 0 0 0-2-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h9.09c-.05-.33-.09-.66-.09-1M4 8V6l8 5l8-5v2l-8 5l-8-5m16 14v-2h-4v-2h4v-2l3 3l-3 3Z" />
+                        </svg>
+                    </div>
+                    {% elif user in friends %}
+                    <div class="profile-btns-inactive">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32">
+                            <path fill="currentColor"
+                                d="M25 10H7a3.003 3.003 0 0 0-3 3v6a2.002 2.002 0 0 0 2 2v7a2.002 2.002 0 0 0 2 2h4a2.002 2.002 0 0 0 2-2V16h-2v12H8v-9H6v-6a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v6h-2v9h-4V16h-2v12a2.002 2.002 0 0 0 2 2h4a2.002 2.002 0 0 0 2-2v-7a2.002 2.002 0 0 0 2-2v-6a3.003 3.003 0 0 0-3-3zM10 9a4 4 0 1 1 4-4a4.004 4.004 0 0 1-4 4zm0-6a2 2 0 1 0 2 2a2.002 2.002 0 0 0-2-2zm12 6a4 4 0 1 1 4-4a4.004 4.004 0 0 1-4 4zm0-6a2 2 0 1 0 2 2a2.002 2.002 0 0 0-2-2z" />
+                        </svg>
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% endfor%}
+                {% else %}
+                <div class="content-empty">
+                    <p> Could not fiend any user </p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13.5 24s1-1 2.5-1s2.5 1 2.5 1M29 16c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13Zm-6 2a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-12 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0Z" />
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'main/js/friends.js' %}"></script>
+{% endblock scripts %}

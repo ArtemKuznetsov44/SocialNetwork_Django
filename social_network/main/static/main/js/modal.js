@@ -64,7 +64,7 @@ $(function ($) {
             success: function (response) {
                 console.log(response)
                 $('form').attr('value', response.post_id)
-                
+
                 $('#prev_comments_container').empty()
 
                 for (let i = 0; i < response.comments.length; i++) {
@@ -81,7 +81,7 @@ $(function ($) {
                         'margin': '10px',
                         'min-height': '30px',
                     })
-                    
+
                     // User name creation:
                     let username = response.comments[i]['first_name'] + " " + response.comments[i]['last_name'] + ": "
                     // Create the container for user name:
@@ -101,8 +101,8 @@ $(function ($) {
                     new_comment_container.append(new_comment_user_name)
                     new_comment_container.append(new_comment_comment)
 
-                    $('#prev_comments_container').append(new_comment_container)
-                    new_comment_container.fadeIn(1000)
+                    $('#prev_comments_container').append(new_comment_container).fadeIn(1000)
+
                 }
             },
             error: function (response) {
@@ -155,17 +155,16 @@ $(function ($) {
         var photoInput = $('#id_photo')[0];
 
         // Checking that our list has enything in it:
-        if (photoInput.files.length > 0) {
-            // In success case add our file into FormData object with key like 'photo' (we will use it in our post receiver method):
-            formData.append('photo', photoInput.files[0]);
-        }
+        // In success case add our file into FormData object with key like 'photo' (we will use it in our post receiver method):
+        formData.append('photo', photoInput.files.length > 0 ? photoInput.files[0] : '');
+
         // Call ajax_send function with prepared params:
         ajax_send(this, formData)
     });
 
     // ================ END WORK WITH PHOTOS ================= //
 
-
+    // ================ WORK WITH POSTS ================= //
 
     // Catch submit event from POST ADDITING modal FORM:
     $('#add_post_ajax_form').submit(function (e) {
@@ -177,35 +176,84 @@ $(function ($) {
         var contentInput = $('#id_content')[0];
 
         // Checking that our list has enything in it:
-        if (contentInput.files.length > 0) {
-            // In success case add our file into FormData object with key like 'content'
-            // (we will use it in our post receiver method):
-            formData.append('content', contentInput.files[0]);
-        }
-
+        // In success case add our file into FormData object with key like 'content'
+        // (we will use it in our post receiver method):
+        formData.append('content', contentInput.files.length > 0 ? contentInput.files[0] : '');
+        
         ajax_send(this, formData)  // Call ajax_send function with prepared params:
     });
 
     $('.one-post-delete-icon').on('click', function (e) {
-        
+
         $.ajax({
-            type: 'post', 
-            url: '/post_delete_ajax/', 
+            type: 'post',
+            url: '/post_delete_ajax/',
             headers: { 'X-CSRFToken': getCookie('csrftoken') },
-            dataType: 'json', 
-            data: {post_id: $(this).attr('value')}, 
-            success: function(response) {
+            dataType: 'json',
+            data: { post_id: $(this).attr('value') },
+            success: function (response) {
                 console.log('ok -', response.ok)
                 window.location.reload()
-            }, 
-            error: function(response) {
+            },
+            error: function (response) {
                 console.log('err -', response.responseJSON.error)
             }
         })
 
-    }); 
+    });
 
     // ================ END WITH POSTS ================= //
+
+    // ================ WORK WITH PROFILE ============== //
+    $('#profile_edit').on('click', function () {
+        console.log("Editing")
+
+        $.ajax({
+            type: 'get',
+            url: '/profile_edit_ajax/',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            dataType: 'json',
+            success: function (response) {
+                console.log('ok -', response)
+                let inputs = {} // Declare the dictionary:
+                // Each is the function for make iterations for elements.
+                // Make the loop to fill inputs dictionary where key - name of input and value is the jQuery input element:
+                $('.modal-body').find('input').each(function () {
+                    // If we use only this we will get the Dom element, but we need jQuery element, thats is why $(this)
+                    inputs[$(this).attr('name')] = $(this)
+                })
+                // Loop to fill all inputs with values from response taken by keys: 
+                $.each(response, function (key, value) {
+                    if (inputs[key]) {
+                        inputs[key].val(value)
+                    }
+                })
+                // Fill select element:
+                $('.modal-body').find('select[name="gender"]').val(response['gender'])
+            },
+            error: function (response) {
+                console.log('err -', response)
+                $(".alert-danger").text(response.responseJSON.error).removeClass('d-none')
+            }
+        })
+    })
+
+    $('#profile_edit_ajax_form').submit(function (e) {
+        e.preventDefault()  // Stop submit default event:
+        console.log(this)
+
+        var formData = new FormData(this);  // Create the new FormData object:
+
+        // Add our content elements from FORM input with id: id_content into the contentInput list:
+        var profile_img = $('#id_profile_img')[0];
+        var profile_back = $('#id_profile_back_img')[0];
+
+        formData.append('profile_img', profile_img.files.length > 0 ? profile_img.files[0] : '');
+        formData.append('profile_back_img', profile_back.files.length > 0 ? profile_back.files[0] : '');
+
+        ajax_send(this, formData)
+    })
+
 })
 
 // The base body of ajax function:

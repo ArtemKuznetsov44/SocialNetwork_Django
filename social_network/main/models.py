@@ -3,6 +3,7 @@ from pathlib import Path
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 import os
 
 
@@ -12,7 +13,7 @@ video_extensions = ['.mp4', '.gif']
 # The list is for document files extensions: 
 document_extenstions = ['.docx', '.odt', '.pdf', '.txt', '.xls', 'xlxs']
 
-image_extenstions = ['.jpg', '.png' ]
+image_extenstions = ['.jpg', '.png', '.jpeg' ]
 
 #region Some useful functions for models:
 # This method configure the path for users' avatars uploadings:
@@ -39,7 +40,11 @@ def message_directory_for_upload(instance, filename):
 
 # This method configure the path for groups' backgound image uploadings:
 def group_directory_for_upload_main_img(instance, filename): 
-    return 'uploads/groups/{0}/{1}'.format(instance.pk, filename)
+    return 'uploads/groups/{0}/main/{1}'.format(instance.pk, filename)
+
+# This method configure the path for groups' backgound image uploadings:
+def group_directory_for_upload_back_img(instance, filename): 
+    return 'uploads/groups/{0}/back/{1}'.fromat(instance.pk, filename)
 
 # This method can find a file extesnion and return eh
 def get_content_type(file_path):
@@ -76,6 +81,8 @@ class Gender(models.Model):
 # Add some new fields to base User model from Django:
 class User(AbstractUser): 
     # New fields for django default User model:
+    slug = models.SlugField(null=False, unique=True, db_index=True)
+    status = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(_("email address"), unique=True, blank=False)
     phone = models.CharField(max_length=15, null=True, blank=False)
     gender = models.ForeignKey("Gender", on_delete=models.CASCADE, null=True, blank=False)
@@ -92,10 +99,16 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+    def save(self, *args, **kwargs):
+        if not self.slug: 
+            self.slug = slugify(self.username)
+        
+        super().save(*args, **kwargs) # Call the real save() method
+
     # For geting absolute url address of current model(record in DB) by pk:
     def get_absolute_url(self):
         # if (self.username is none):
-        return reverse("profile", kwargs={"pk": self.pk})
+        return reverse("profile", kwargs={"slug": self.slug})
         
         # return reverser('profile', kwargs={"username": self.username})
 
@@ -107,15 +120,6 @@ class UserPhoto(models.Model):
 
     class Meta: 
         unique_together = ('user', 'photo')
-
-# The model for user's friends: 
-class UserFriend(models.Model): 
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name='main_for_friend_user')
-    friend = models.ForeignKey("User", on_delete=models.CASCADE, related_name='friend_user')
-
-    class Meta: 
-        unique_together = ('user', 'friend')
-
 
 #The model for user's followers:
 class UserFollower(models.Model): 
@@ -175,6 +179,7 @@ class Post(models.Model):
         # Start save method of a super class:
         super().save(*args, **kwargs)
 
+
     def get_absolute_url(self):
         return reverse("show_post", kwargs={"pk": self.pk})
 
@@ -194,6 +199,7 @@ class Group(models.Model):
     group_name = models.CharField(max_length=50, null=False, blank=False)
     group_theme = models.ForeignKey("GroupTheme", on_delete=models.CASCADE)
     group_img = models.ImageField(upload_to=group_directory_for_upload_main_img, null=True)
+    group_back_img = models.ImageField(upload_to=group_directory_for_upload_back_img, null=True)
     # The group description (it must be):
     group_info = models.TextField(null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)

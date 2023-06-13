@@ -45,11 +45,19 @@ My Profile
                 <div class="right-head-profile-user-info-edit">
                     <div class="right-head-profile-user-info">
                         <div id="user-fname-lname"> {{user.first_name}} {{user.last_name}} </div>
+                        {% if user.status %}
+                        <div class="user-status"> {{user.status}}</div>
+                        {% endif %}
                         <div id="login-info"> {{user.last_login}} </div>
                     </div>
+                    {% if request.user.pk == user.pk %}
                     <div class="right-head-profile-user-edit">
-                        <a class="profile-btns" href="#" id=""> Edit </a>
+                        <a href="#" class="profile-btns" data-bs-toggle="modal"
+                        data-bs-target="#ajax_profile_edit" id="profile_edit">
+                        Edit
+                    </a>
                     </div>
+                    {% endif %}
                 </div>
 
             </div>
@@ -150,8 +158,8 @@ My Profile
                         <div class="one-post-body-content">
                             {% if user_post.content_type.name == 'image' %}
                             <img src="{{user_post.content.url}}" alt="post_img">
-                            {% elif user_post.content_type.name == 'video '%}
-                            <video src="{{user_post.content.url}}" autoplay alt="post_video" controls>
+                            {% elif user_post.content_type.name  == 'video' %}
+                            <video src="{{user_post.content.url}}" poster muted alt="post_video" controls>
                             </video>
                             {% endif %}
                         </div>
@@ -208,6 +216,7 @@ My Profile
 {% include 'main/modal_add_photo.html' %}
 {% include 'main/modal_add_post.html' %}
 {% include 'main/modal_add_comment.html' %}
+{% include 'main/modal_profile_edit.html' %}
 {% endblock content %}
 
 {% block scripts %}

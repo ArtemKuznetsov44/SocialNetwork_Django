@@ -105,3 +105,41 @@ class AddCommentForm(forms.ModelForm):
                 'placeholder': 'Leave your comment here...'
             })
         }
+
+class UpdateUserInfoForm(forms.ModelForm):
+
+    first_name = forms.CharField(label='First Name', required=True, widget=TextInput(attrs={
+        'class': 'form-control'
+    }))
+    last_name = forms.CharField(label='Last Name', required=True, widget=TextInput(attrs={
+        'class': 'form-control'
+    }))
+
+    gender = forms.ModelChoiceField(queryset=Gender.objects.all(),
+        empty_label='Gender', widget=Select(attrs={'class': 'form-select'}), required=True)
+    
+    date_of_birth = forms.DateField(label='Date of birht', required=True, widget=DateInput(
+        attrs={'type': 'date', 'class': 'form-control'}))
+    
+    profile_img = forms.ImageField(label='Profile Image', required=False, widget=FileInput(attrs={
+        'class': 'form-control'
+    }))
+
+    profile_back_img = forms.ImageField(label='Profile Background', required=False, widget=FileInput(attrs={
+        'class': 'form-control'
+    }))
+
+    class Meta: 
+        model = User
+        fields = ['first_name','last_name', 'gender', 'date_of_birth','username', 'status', 'profile_img', 'profile_back_img']
+
+        widgets = {
+            'status': TextInput(attrs={
+                "class": "form-control", 
+                "placeholder": "Your status..."
+            }),
+            'username': TextInput(attrs={
+                'class': 'form-control', 
+                'placholder': 'Enter new username...'
+            })
+        }

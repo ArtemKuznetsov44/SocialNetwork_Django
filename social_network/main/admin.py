@@ -11,20 +11,16 @@ from main.models import *
 # The User model registration:
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin): 
-    list_display = ['id', 'username', 'first_name', 'last_name', 'gender',  'email',  'last_login', 'created_at', 'is_staff']
+    list_display = ['id','slug', 'username', 'first_name', 'last_name', 'gender',  'email', 'status',  'last_login', 'created_at', 'is_staff']
     list_editable = ['is_staff']
     list_filter = ['id', 'created_at']
     search_fields = ['first_name', 'last_name', 'user_name']
+    prepupulated_fields = {'slug': ('username')}
 
 # The UserPhoto model registration: 
 @admin.register(UserPhoto)
 class UserPhotoAdmin(admin.ModelAdmin): 
     list_display = ['id', 'user', 'photo', 'created_at']
-
-# The UserFriend model registration: 
-@admin.register(UserFriend)
-class UserFriendAdmin(admin.ModelAdmin): 
-    list_diplay = ['id', 'user', 'friend']
 
 # The UserFollower model registration: 
 @admin.register(UserFollower)
