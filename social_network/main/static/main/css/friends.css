@@ -1,0 +1,195 @@
+.main-container {
+    position: relative;
+    left: 50%;
+    width: 95vw;
+    height: 80vh;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: 15vw 80vw;
+    column-gap: 5px;
+}
+
+.left-menu {
+    background-color: #404040;
+    border-radius: 20px 0px 0px 20px;
+    height: 80%;
+}
+
+.left-menu .menu-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: left;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#sign_out {
+    color: #212323;
+}
+
+.left-menu .menu-content div a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    margin-left: 2.5em;
+
+}
+
+.left-menu .menu-content div a:hover {
+    color: #FDC75B;
+    transition: 0s ease;
+}
+
+.profile-btns, .profile-btns-inactive {
+    background-color: #171717;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    white-space:nowrap;
+}
+
+.profile-btns:hover {
+    background-color: #FDC75B;
+    transition: 0.5s ease;
+}
+
+/* ============================================================================= */
+/* ----------------------------------------------------------------------------- */
+
+
+
+.right-part {
+    display: grid;
+    max-width: 100%;
+    border-radius: 0px 20px 20px 0px;
+    grid-template-rows: 60px auto;
+    grid-column: 1fr;
+    overflow-y: auto;
+    row-gap: 5px;
+}
+
+.right-part-head {
+    grid-row: 1; 
+    background-color: #404040;
+}
+
+.right-part-head-categories {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-start;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.right-part-head-categories > div {
+    margin-right: 1%;
+}
+
+.right-part-body {
+    grid-row: 2;
+    height: 100%;
+    background-color: #404040;
+    overflow: scroll; 
+}
+
+.right-part-body-friends, .right-part-body-requests, .right-part-body-users {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-empty {
+    display: flex;
+    height: 100%;
+    font-size: 24px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.one-record {
+    display: flex;
+    max-height: 80px;
+    width: 94%;
+    margin-left: 3%;
+    margin-right: 3%;
+    margin-bottom: 5px;
+    margin-top:5px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.one-record-user-img-info {
+    display: flex;
+   
+    width: 100%;
+}
+.one-record-user-info {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.one-record-buttons-container {
+    display: block;
+}
+.one-record-buttons-container > div {
+    width: 138px;
+    margin-right: 2%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    vertical-align: middle;
+}
+
+.one-record-user-img a img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    border: 3px solid #171717;
+    box-shadow: 0px 2px 5px #171717;
+}
+
+@media (max-width: 992px) {
+    .main-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    .left-menu {
+        display: none;
+    }
+
+    .right-part {
+        grid-column: 1 !important;
+        border-radius: 20px 20px 20px 20px !important;
+    }
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 0px 20px 20px 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #FDC75B, #ED664C);
+    border-radius: 20px;
+    height: 50px;
+    /* Установите маргины, чтобы скроллбар занимал определенную высоту */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
