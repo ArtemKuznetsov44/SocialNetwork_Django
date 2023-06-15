@@ -1,0 +1,46 @@
+{% extends "main/base.html"|pjax:request %}
+{% load main_tags %}
+{% load pjax_tags %}
+{% load static %}
+{% block title %} My Profile {% endblock title%}
+{% block links %}
+<link type="text/css" href="{% static 'main/css/groups.css' %}" rel="stylesheet">
+{% endblock links %}
+{% block burger %}
+{% get_burger_content %}
+{% endblock burger %}
+{% block content %}
+<div class="main-container">
+    <div class="left-menu">
+        {% get_left_menu %}
+    </div>
+    <div class="right-part">
+        <a href="#" id="modal_group_create" class="group-btns" data-bs-toggle="modal"
+            data-bs-target="#ajax_create_group">
+            CREATE GROUP
+        </a>
+        <div class="group">
+            <div>
+                {% if groups %}
+                {% for group in groups %}
+                <div>
+                    <a href="/group/{{ group.id }}">
+                        <div class="one-post-head-group-img">
+                            <img src="/media/{{ group.group_img }}" alt="img">
+                        </div>
+                        <p>"{{ group.group_name }}"</p>
+                    </a>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'main/modal_create_group.html' %}
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'main/js/modal.js' %}"></script>
+<script src="{% static 'main/js/groups.js' %}"></script>
+{% endblock scripts %}

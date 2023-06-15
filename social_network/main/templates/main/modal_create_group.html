@@ -1,0 +1,51 @@
+<div class="modal fade" id="ajax_create_group" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);">
+        <div class="modal-content" style="background-color:#404040;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new group</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-danger d-none" role="alert"></div>
+            <form action="{% url 'create_group_ajax' %}" method="post" enctype="multipart/form-data"
+                id="create_group_ajax_form">
+                {% csrf_token %}
+                <div class="modal-body">
+
+                    {% for field in create_group_ajax %}
+                    <!-- {{ field.label }} -->
+                    {% if field.field.widget.input_type == 'checkbox' %}
+                        {{field.label}}
+                        {{field}}
+                        <br />
+                    {% else %}
+                        {{field}}
+                        <br />
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 256 256">
+                                <path fill="#842029"
+                                    d="M240.26 186.1L152.81 34.23a28.74 28.74 0 0 0-49.62 0L15.74 186.1a27.45 27.45 0 0 0 0 27.71A28.31 28.31 0 0 0 40.55 228h174.9a28.31 28.31 0 0 0 24.79-14.19a27.45 27.45 0 0 0 .02-27.71Zm-20.8 15.7a4.46 4.46 0 0 1-4 2.2H40.55a4.46 4.46 0 0 1-4-2.2a3.56 3.56 0 0 1 0-3.73L124 46.2a4.77 4.77 0 0 1 8 0l87.44 151.87a3.56 3.56 0 0 1 .02 3.73ZM116 136v-32a12 12 0 0 1 24 0v32a12 12 0 0 1-24 0Zm28 40a16 16 0 1 1-16-16a16 16 0 0 1 16 16Z" />
+                            </svg>
+                            <use xlink:href="#exclamation-triangle-fill" />
+                            </svg>
+                        </div>
+                        <div>
+                            {{field.errors}}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="alert alert-success d-none w-90" role="alert">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" style="background-color:#2DD648">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@ from pathlib import Path
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 import os
 
@@ -38,8 +39,12 @@ def message_directory_for_upload(instance, filename):
     return 'uploads/messages/{0}/{1}/{2}'.format(instance.pk, instance.content_type__name, filename)
 
 # This method configure the path for groups' backgound image uploadings:
-def group_directory_for_upload_main_img(instance, filename): 
-    return 'uploads/groups/{0}/{1}'.format(instance.pk, filename)
+def group_directory_for_upload_main_img(instance, filename):
+    return 'uploads/groups/{0}/main/{1}'.format(instance.pk, filename)
+
+# This method configure the path for groups' backgound image uploadings:
+def group_directory_for_upload_back_img(instance, filename):
+    return 'uploads/groups/{0}/back/{1}'.fromat(instance.pk, filename)
 
 # This method can find a file extesnion and return eh
 def get_content_type(file_path):

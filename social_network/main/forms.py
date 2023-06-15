@@ -80,13 +80,13 @@ class AddPostsForm(forms.ModelForm):
                 "class": "form-control", 
                 "rows": "5",
                 "placeholder": "Some content here..."
-            }), 
+            }),
             'content': FileInput(attrs={
                 'class': 'form-control'
-            }), 
+            }),
             'like_status': CheckboxInput(attrs={
                 'class': 'form-check-input'
-            }), 
+            }),
             'comment_status': CheckboxInput(attrs={
                 'class': 'form-check-input'
             })
@@ -104,4 +104,30 @@ class AddCommentForm(forms.ModelForm):
                 'rows': '3', 
                 'placeholder': 'Leave your comment here...'
             })
+        }
+
+# This is the form for additing new posts by user:
+class CreateGroupForm(forms.ModelForm): 
+    class Meta: 
+        model = Group
+        fields = ['group_name', 'group_info', 'group_theme',    'group_img']
+
+        widgets = {
+            'group_name': TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Name"
+            }),
+            'group_info': Textarea(attrs={
+                "class": "form-control", 
+                "rows": "3",
+                "placeholder": "info"
+            }),
+            'group_theme': Select(attrs={
+                "class": "form-control",
+                "required": False,
+            }),
+            'group_img': FileInput(attrs={
+                'class': 'form-control',
+                "required": False,
+            }),
         }

@@ -1,0 +1,42 @@
+.main-container {
+    position: relative;
+    left: 50%;
+    width: 95vw;
+    height: 80vh;
+    transform: translate(-50%);
+    display: grid;
+    grid-template-columns: 15vw 80vw;
+    column-gap: 5px;
+}
+
+.left-menu {
+    background-color: #404040;
+    border-radius: 20px 0px 0px 20px;
+    height: 80%;
+}
+
+.left-menu .menu-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: left;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#sign_out {
+    color: #212323;
+}
+
+.left-menu .menu-content div a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    margin-left: 2.5em;
+
+}
+
+.left-menu .menu-content div a:hover {
+    color: #FDC75B;
+    transition: 0s ease;
+}

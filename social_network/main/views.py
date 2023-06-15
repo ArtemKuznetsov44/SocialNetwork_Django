@@ -57,7 +57,7 @@ class UserSignOut(LogoutView):
 
 
 # This is the class based view for show profile of current user
-class ShowProfile( DetailView):
+class ShowProfile(DetailView):
     model = User
     template_name = "main/profile.html"
     context_object_name = "user"
@@ -87,12 +87,90 @@ class ShowProfile( DetailView):
         # Return new context which contains the ['user' and 'user_posts' and 'user_photos'] now:
         return context
 
+class ShowGroups(ListView):
+    model = Group
+    paginate_by = 100
+    template_name="main/groups.html"
+    context_object_name = "groups"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+    # def get(self, request):
+    #     user = self.request.user
+    #     if user and user.is_authenticated:
+    #         return render(request, template_name='groups')
+
+    #     return redirect('start_page')
+
+
+class ShowGroup(DetailView):
+    model = Group
+    template_name = "main/group.html"
+    context_object_name = "group"
+
+    # This is the DetaileView class function where we can specify addition context for working template:
+    def get_context_data(self, **kwargs):
+        # This expression is used to get the already existing context on the page (so as not to lose it, but only add new data to it later):
+        # SAVE ALREADY EXISTING CONTEXT ON THE PAGE:
+        context = super().get_context_data(**kwargs)
+        # Create new data for context list - a list of posts by current user:
+        context["group_posts_objects"] = Post.objects.filter(
+            group=self.object.id).order_by('created_at')
+
+        # Create dictionary where key - post.id and value - count of likes:
+        post_likes_count = {}
+        post_comments_count = {}
+        for post in context['group_posts_objects']:
+            # For post by it id we get count of likes:
+            post_likes_count[post.id] = PostLike.objects.filter(post=post.id).count()
+            # For post by it id we get count of comments
+            post_comments_count[post.id] = PostComment.objects.filter(post=post.id).count()
+        
+        context["post_likes_count"] = post_likes_count
+        context["post_comments_count"] = post_comments_count
+        context["user_photos_objects"] = UserPhoto.objects.filter(
+            group=self.object.id).order_by('created_at')
+        # Return new context which contains the ['user' and 'user_posts' and 'user_photos'] now:
+        return context
+
 class ShowPhotosPage(ListView):
     pass
 
+# This class based view is used for ajax post additing:
+class CreateGroupAjax(View): 
+    def post(self, request): 
+        group_name = request.POST.get('group_name')
+        group_info = request.POST.get('group_info')
+        group_img = request.FILES.get('group_img')
+
+        group_theme = request.POST.get('group_theme')
+        theme = GroupTheme.objects.get(id = group_theme)
+
+        group = Group.objects.create(
+            admin = self.request.user,
+            group_name = group_name,
+            group_info = group_info,
+            group_theme = theme,
+            group_img = None,
+            )
+        group.group_img = group_img
+
+        group.save()
+
+        if group: 
+            return JsonResponse(
+                data={'ok': 'Success!'}, 
+                status=201
+            )
+
+        return JsonResponse(
+            data={'error': 'Error in post creation'},
+            status=400
+        )
 
 # This class based view is used for ajax photo additing:
-class AddNewPhotoAjax( View):
+class AddNewPhotoAjax(View):
    # This method is used when we send post requests to the url 'profile'
       def post(self, request):
         # Get photo from files:
@@ -209,16 +287,15 @@ class AddLikeAjax(View):
         return JsonResponse(data={'create': False}, status=201)
 
 
-class DeletePostAjax(View): 
-    def post(self, request): 
+class DeletePostAjax(View):
+    def post(self, request):
         post_id = int(self.request.POST.get('post_id'))
         post_object = Post.objects.get(pk=post_id)
 
-        if post_object: 
+        if post_object:
             if post_object.user == self.request.user:
                 post_object.delete()
                 return JsonResponse(data={'ok': 'Post was deleted'}, status=201)
-            else: 
-                return JsonResponse(data={'error': 'You dont have permission for this action!'}, status=400) 
-
+            else:
+                return JsonResponse(data={'error': 'You dont have permission for this action!'}, status=400)
    

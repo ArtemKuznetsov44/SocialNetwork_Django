@@ -9,7 +9,7 @@ links = {
     'My Profile': reverse('start_page'),
     'News': "#",
     'Friends': "#",
-    'Communities': "#",
+    'Communities': reverse('groups'),
     'Photos': "#",
     'Music': "#",
     'Videos': "#",
