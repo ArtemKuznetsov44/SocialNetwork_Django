@@ -84,7 +84,7 @@ class User(AbstractUser):
     slug = models.SlugField(null=False, unique=True, db_index=True)
     status = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(_("email address"), unique=True, blank=False)
-    phone = models.CharField(max_length=15, null=True, blank=False)
+    phone = models.CharField(max_length=16, null=True, blank=False)
     gender = models.ForeignKey("Gender", on_delete=models.CASCADE, null=True, blank=False)
     date_of_birth = models.DateField(null=True, blank=False)
     profile_img = models.ImageField(upload_to=user_directory_profile_image_path, null=True)
@@ -102,6 +102,10 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         if not self.slug: 
             self.slug = slugify(self.username)
+        else: 
+            self.slug = None
+            self.slug = slugify(self.username)
+
         
         super().save(*args, **kwargs) # Call the real save() method
 
@@ -256,6 +260,10 @@ class ChatMember(models.Model):
 
     class Meta: 
         unique_together = ('chat', 'user')
+    
+    def __str__(self):
+        return self.user.username
+    
 
 
 # This is the model for Message: 

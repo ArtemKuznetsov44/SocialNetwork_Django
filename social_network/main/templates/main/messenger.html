@@ -1,0 +1,88 @@
+{% extends "main/base.html" %}
+{% load main_tags %}
+
+{% load static %}
+
+{% block title %}
+Messenger
+{% endblock title%}
+
+{% block links %}
+<link type="text/css" href="{% static 'main/css/messenger.css' %}" rel="stylesheet">
+{% endblock links %}
+
+{% block burger %}
+{% get_burger_content %}
+{% endblock burger %}
+
+{% block content %}
+<div class="main-container">
+
+    <div class="left-menu">
+        {% get_left_menu %}
+    </div>
+
+    <div class="right-part">
+        <div class="right-part-head">
+            Messenger
+        </div>
+        <div class="right-part-body">
+            <div class="right-part-body-head">
+                {% if users %}
+                <div class="users-container">
+                    {% for user in users %}
+                    <div class="one-user">
+                        <div class="user-img">
+                            {% if user.profile_img %}
+                            <img src="{{ user.profile_img.url }}" alt="default-back">
+                            {% else %}
+                            <img src="{% static 'main/images/default_profile.png' %}" alt="default-back">
+                            {% endif %}
+                        </div>
+                        <div> {{user.first_name}}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="no-users">
+                    <p> No users yet </p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13.5 24s1-1 2.5-1s2.5 1 2.5 1M29 16c0 7.18-5.82 13-13 13S3 23.18 3 16S8.82 3 16 3s13 5.82 13 13Zm-6 2a1 1 0 1 1-2 0a1 1 0 0 1 2 0Zm-12 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0Z" />
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+            <div class="right-part-body-main">
+                {% if opponents %}
+                {% for opponent in opponents %}
+                <div class="one-opponent">
+                    <div class="opponent-img go-to-dialog" value="{{opponent.pk}}">
+                        {% if opponent.profile_img %}
+                        <img src="{{ opponent.profile_img.url }}" alt="default-back">
+                        {% else %}
+                        <img src="{% static 'main/images/default_profile.png' %}" alt="default-back">
+                        {% endif %}
+                    </div>
+                    <div class="opponent-info">
+                    <div class="opponent-name"> {{opponent.first_name}} {{opponent.last_name}}</div>
+                    <div class="opponent-username"> {{opponent.username}}</div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'main/js/messenger.js' %}"></script>
+<script src="{% static 'main/js/modals_and_scrolling.js' %}"></script>
+{% endblock scripts %}

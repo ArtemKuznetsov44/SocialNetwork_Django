@@ -1,6 +1,6 @@
-{% extends "main/base.html"|pjax:request %}
+{% extends "main/base.html" %}
 {% load main_tags %}
-{% load pjax_tags %}
+
 {% load static %}
 
 {% block title %}
@@ -17,9 +17,11 @@ My Profile
 
 {% block content %}
 <div class="main-container">
+
     <div class="left-menu">
         {% get_left_menu %}
     </div>
+
     <div class="right-part">
 
         <div class="right-head">
@@ -52,10 +54,14 @@ My Profile
                     </div>
                     {% if request.user.pk == user.pk %}
                     <div class="right-head-profile-user-edit">
-                        <a href="#" class="profile-btns" data-bs-toggle="modal"
-                        data-bs-target="#ajax_profile_edit" id="profile_edit">
-                        Edit
-                    </a>
+                        <a href="#" class="profile-btns" data-bs-toggle="modal" data-bs-target="#ajax_profile_edit"
+                            id="profile_edit">
+                            Edit
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="go-to-dialog profile-btns" value="{{user.pk}}">
+                        Go to Dialog
                     </div>
                     {% endif %}
                 </div>
@@ -65,11 +71,10 @@ My Profile
 
         <div class="right-photos">
 
-          
             <div class="right-photos-head">
                 {% if request.user.pk == user.pk %}
                 <div>
-                    <a href="{% url 'photos_page' %}" class="profile-btns"> Go to Photos</a>
+                    <a href="#" class="profile-btns"> Go to Photos</a>
                     <a href="#" id="modal_photo_add" class="profile-btns" data-bs-toggle="modal"
                         data-bs-target="#ajax_add_photo" id="modal_photo_add_btn">
                         Add Photo
@@ -83,6 +88,14 @@ My Profile
                 {% for user_photo in user_photos_objects %}
                 <div class="one-photo">
                     <img src="{{ user_photo.photo.url }}" alt="img">
+                    {% if request.user.pk == user.pk%}
+                    <div class="one-photo-delete-icon profile-btns" value={{user_photo.pk}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16">
+                            <path fill="currentColor"
+                                d="M2 5v10c0 .55.45 1 1 1h9c.55 0 1-.45 1-1V5H2zm3 9H4V7h1v7zm2 0H6V7h1v7zm2 0H8V7h1v7zm2 0h-1V7h1v7zm2.25-12H10V.75A.753.753 0 0 0 9.25 0h-3.5A.753.753 0 0 0 5 .75V2H1.75a.752.752 0 0 0-.75.75V4h13V2.75a.752.752 0 0 0-.75-.75zM9 2H6v-.987h3V2z" />
+                        </svg>
+                    </div>
+                    {% endif %}
                 </div>
                 {% endfor %}
                 {% else %}
@@ -120,33 +133,36 @@ My Profile
                 {% for user_post in user_posts_objects %}
                 <div class="one-post">
 
-                    <div class="one-post-head">
+                    <a href="{% url 'one_post' user_post.pk %}" style="text-decoration:none; color: white;">
+                        <div class="one-post-head">
 
-                        <div class="one-post-head-user-img-desciption">
-                            <div class="one-post-head-user-img">
-                                {% if user.profile_img %}
-                                <img src="{{ user.profile_img.url }}" alt="default-back" id="user_img_in_post">
-                                {% else %}
-                                <img src="{% static 'main/images/default_profile.png' %}" alt="default-back"
-                                    id="user_img_in_post">
-                                {% endif %}
+                            <div class="one-post-head-user-img-desciption">
+                                <div class="one-post-head-user-img">
+                                    {% if user.profile_img %}
+                                    <img src="{{ user.profile_img.url }}" alt="default-back" id="user_img_in_post">
+                                    {% else %}
+                                    <img src="{% static 'main/images/default_profile.png' %}" alt="default-back"
+                                        id="user_img_in_post">
+                                    {% endif %}
+                                </div>
+                                <div class="one-post-head-description">
+                                    <div id="user-name-in-post"> {{user.first_name}} {{user.last_name}}</div>
+                                    <div id="post-created-at"> {{user_post.created_at}} </div>
+                                </div>
                             </div>
-                            <div class="one-post-head-description">
-                                <div id="user-name-in-post"> {{user.first_name}} {{user.last_name}}</div>
-                                <div id="post-created-at"> {{user_post.created_at}} </div>
+
+                            {% if request.user.pk == user.pk %}
+                            <div class="one-post-delete-icon" value={{user_post.pk}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
+                                    <path fill="currentColor"
+                                        d="M2 5v10c0 .55.45 1 1 1h9c.55 0 1-.45 1-1V5H2zm3 9H4V7h1v7zm2 0H6V7h1v7zm2 0H8V7h1v7zm2 0h-1V7h1v7zm2.25-12H10V.75A.753.753 0 0 0 9.25 0h-3.5A.753.753 0 0 0 5 .75V2H1.75a.752.752 0 0 0-.75.75V4h13V2.75a.752.752 0 0 0-.75-.75zM9 2H6v-.987h3V2z" />
+                                </svg>
                             </div>
-                        </div>
+                            {% endif %}
 
-                        {% if request.user.pk == user.pk %}
-                        <div class="one-post-delete-icon" value={{user_post.pk}}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 16 16">
-                                <path fill="currentColor"
-                                    d="M2 5v10c0 .55.45 1 1 1h9c.55 0 1-.45 1-1V5H2zm3 9H4V7h1v7zm2 0H6V7h1v7zm2 0H8V7h1v7zm2 0h-1V7h1v7zm2.25-12H10V.75A.753.753 0 0 0 9.25 0h-3.5A.753.753 0 0 0 5 .75V2H1.75a.752.752 0 0 0-.75.75V4h13V2.75a.752.752 0 0 0-.75-.75zM9 2H6v-.987h3V2z" />
-                            </svg>
                         </div>
-                        {% endif %}
+                    </a>
 
-                    </div>
 
                     <div class="one-post-body">
                         {% if user_post.text %}
@@ -158,7 +174,7 @@ My Profile
                         <div class="one-post-body-content">
                             {% if user_post.content_type.name == 'image' %}
                             <img src="{{user_post.content.url}}" alt="post_img">
-                            {% elif user_post.content_type.name  == 'video' %}
+                            {% elif user_post.content_type.name == 'video' %}
                             <video src="{{user_post.content.url}}" poster muted alt="post_video" controls>
                             </video>
                             {% endif %}
@@ -220,6 +236,6 @@ My Profile
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'main/js/modal.js' %}"></script>
-<script src="{% static 'main/js/profile.js' %}"></script>
+<script src="{% static 'main/js/modals_and_scrolling.js' %}"></script>
+<script src="{% static 'main/js/validation.js' %}"></script>
 {% endblock scripts %}

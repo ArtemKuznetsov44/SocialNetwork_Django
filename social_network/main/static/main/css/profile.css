@@ -9,10 +9,12 @@
     column-gap: 5px;
 }
 
+
 .left-menu {
+    grid-column:1; 
     background-color: #404040;
     border-radius: 20px 0px 0px 20px;
-    height: 80%;
+    height: 60vh;
 }
 
 .left-menu .menu-content {
@@ -24,7 +26,7 @@
     justify-content: space-evenly;
 }
 
-#sign_out {
+#sign-out {
     color: #212323;
 }
 
@@ -173,6 +175,15 @@
     margin-right: 8px;
 }
 
+.one-photo-delete-icon {
+    position: relative; 
+    bottom: 20px; 
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .right-photos .right-photos-body .one-photo>img {
     width: 260px;
     height: 260px;
@@ -228,10 +239,15 @@
     margin-bottom: 5px;
 }
 
+.one-post a {
+    grid-row: 1;
+}
+
 .one-post-head {
     grid-row: 1;
     display: flex;
     flex: 1 1;
+    height: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
