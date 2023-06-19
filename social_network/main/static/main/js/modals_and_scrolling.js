@@ -164,7 +164,7 @@ $(function ($) {
 
     // ================ END WORK WITH PHOTOS ================= //
 
-    // ================ WORK WITH POSTS ================= //
+    // ================== WORK WITH POSTS ==================== //
 
     // Catch submit event from POST ADDITING modal FORM:
     $('#add_post_ajax_form').submit(function (e) {
@@ -179,34 +179,90 @@ $(function ($) {
         // In success case add our file into FormData object with key like 'content'
         // (we will use it in our post receiver method):
         formData.append('content', contentInput.files.length > 0 ? contentInput.files[0] : '');
-        
+
         ajax_send(this, formData)  // Call ajax_send function with prepared params:
     });
 
     $('.one-post-delete-icon').on('click', function (e) {
+        e.preventDefault();
+        let result = confirm("Are you really whant to delete this post?");
 
-        $.ajax({
-            type: 'post',
-            url: '/post_delete_ajax/',
-            headers: { 'X-CSRFToken': getCookie('csrftoken') },
-            dataType: 'json',
-            data: { post_id: $(this).attr('value') },
-            success: function (response) {
-                console.log('ok -', response.ok)
-                window.location.reload()
-            },
-            error: function (response) {
-                console.log('err -', response.responseJSON.error)
-            }
-        })
-
+        if (result) {
+            $.ajax({
+                type: 'post',
+                url: '/post_delete_ajax/',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                dataType: 'json',
+                data: { post_id: $(this).attr('value') },
+                success: function (response) {
+                    console.log('ok -', response.ok)
+                    window.location.reload()
+                },
+                error: function (response) {
+                    console.log('err -', response.responseJSON.error)
+                }
+            })
+        }
     });
+
+    $('.delete-friend').on('click', function (e) {
+        e.preventDefault()
+
+        if (confirm("Are you really whant to delete this user from your friends?"))
+            send_ajax('delete-friend', this);
+
+        if (confirm("Do you what to delete this user from your followers?"))
+            send_ajax('delete-follower', this);
+
+        function send_ajax(task, object) {
+            $.ajax({
+                type: 'get',
+                url: '/delete_frind_ajax/',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                dataType: 'json',
+                data: { task: task, user_id: $(object).attr('value') },
+                success: function (resposne) {
+                    console.log('ok -', resposne)
+                },
+                error: function (resposne) {
+                    console.log('err -', resposne)
+                }
+            })
+        }
+    })
+
+    $('.one-photo-delete-icon').on('click', function (e) {
+        e.preventDefault()
+
+        let result = confirm("Are you really whant to delete this photo?");
+
+        if (result) {
+            $.ajax({
+                type: 'post',
+                url: '/photo_delete_ajax/',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                dataType: 'json',
+                data: { photo_id: $(this).attr('value') },
+                success: function (response) {
+                    console.log('ok -', response.ok)
+                    window.location.reload()
+                },
+                error: function (response) {
+                    console.log('err -', response.responseJSON.error)
+                }
+            });
+        }
+    })
 
     // ================ END WITH POSTS ================= //
 
     // ================ WORK WITH PROFILE ============== //
     $('#profile_edit').on('click', function () {
         console.log("Editing")
+        $('.modal-body').find('.error-for-field').addClass('d-none')
+        $('.modal-body').find('input').css({
+            'border': 'var(--bs-border-width) solid var(--bs-border-color)'
+        })
 
         $.ajax({
             type: 'get',
@@ -254,6 +310,33 @@ $(function ($) {
         ajax_send(this, formData)
     })
 
+    $('.go-to-dialog').on('click', function (e) {
+        console.log(this)
+
+        $.ajax({
+            type: 'post',
+            url: '/start_dialog_ajax/',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            dataType: 'json',
+            data: { user_id: $(this).attr('value') },
+            success: function (response) {
+                window.location.replace('/messenger/dialog=' + response.ok)
+            },
+            error: function (response) {
+                console.log(response.error)
+            }
+        })
+    })
+
+    document.getElementById("sign-out").addEventListener('click', function (event) {
+        event.preventDefault();
+
+        let result = confirm("Are you really what to sign out?");
+
+        if (result) {
+            window.location.href = event.target.href;
+        }
+    })
 })
 
 // The base body of ajax function:
@@ -280,4 +363,23 @@ function ajax_send(form, formData) {
         }
     })
 }
+// Event before window reloading:
+window.addEventListener('beforeunload', function () {
+    // scrollY - property which returns the scroll on Y value. 
+    // scrollTop - the same thing, but it works with elemenets on page.
 
+    // Save in localStorege the value of scrollTop property (values in localScrorage we can use after page roloadin):
+    this.localStorage.setItem('scrollPosition', document.querySelector(".right-part").scrollTop)
+})
+// Event in time when page is loading:
+window.addEventListener('load', function () {
+    // Getting item from localStorage:
+    let scrollPosition = this.localStorage.getItem('scrollPosition');
+    // If it is not null:
+    if (scrollPosition !== null) {
+        // Find interesting element and make scrooll to (xPosition, yPosition).
+        // yPosition is the value from localStorage. 
+        this.document.querySelector(".right-part").scrollTo(0, scrollPosition);
+        this.localStorage.removeItem('scrollPosition')
+    }
+})

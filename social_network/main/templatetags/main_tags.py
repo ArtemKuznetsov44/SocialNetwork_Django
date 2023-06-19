@@ -8,6 +8,7 @@ register = template.Library()
 links = {
     'My Profile': reverse('start_page'),
     'News': "#",
+    'Messenger': reverse('messenger_page'),
     'Friends': reverse('friends_page'),
     'Communities': "#",
     'Photos': "#",

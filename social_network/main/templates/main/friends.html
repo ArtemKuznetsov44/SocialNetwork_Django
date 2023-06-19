@@ -1,10 +1,10 @@
-{% extends "main/base.html"|pjax:request %}
+{% extends "main/base.html" %}
 {% load main_tags %}
-{% load pjax_tags %}
+
 {% load static %}
 
 {% block title %}
-My Profile
+Friends
 {% endblock title%}
 
 {% block links %}
@@ -70,8 +70,11 @@ My Profile
 
                         </div>
                     </div>
-                    <div style="display:flex; align-items:center; font-size:13px; min-width:120px; flex-wrap:wrap;">
-                        {{friend.last_login|date:"m/d/Y  h:iA" }}
+                    <div class="delete-friend profile-btns" value={{friend.pk}}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20">
+                            <path fill="currentColor"
+                                d="M14.95 6.46L11.41 10l3.54 3.54l-1.41 1.41L10 11.42l-3.53 3.53l-1.42-1.42L8.58 10L5.05 6.47l1.42-1.42L10 8.58l3.54-3.53z" />
+                        </svg>
                     </div>
                 </div>
 
@@ -94,13 +97,13 @@ My Profile
                 <div class="one-record">
                     <div class="one-record-user-img-info">
                         <div class="one-record-user-img">
-                            {% if friend_req.sender.profile_img.url %}
+                            {% if friend_req.sender.profile_img %}
                             <a href="{% url 'profile' friend_req.sender.slug %}" alt="to_{{user.pk}}"
                                 style="text-decoration:none;color:white;">
                                 <img src="{{ friend_req.sender.profile_img.url }}" alt="default-back">
                             </a>
                             {% else %}
-                            <a href="{% url 'profile' friend_req.sed.slug %}" alt="to_{{user.pk}}"
+                            <a href="{% url 'profile' friend_req.sender.slug %}" alt="to_{{user.pk}}"
                                 style="text-decoration:none;color:white;">
                                 <img src="{% static 'main/images/default_profile.png' %}" alt="default-back">
                             </a>
@@ -215,4 +218,5 @@ My Profile
 
 {% block scripts %}
 <script src="{% static 'main/js/friends.js' %}"></script>
+<script src="{% static 'main/js/modals_and_scrolling.js' %}"></script>
 {% endblock scripts %}
